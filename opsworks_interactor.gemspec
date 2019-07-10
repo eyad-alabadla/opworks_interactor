@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.org/fosubo/opworks_interactor'
   s.license     = 'MIT'
   s.add_runtime_dependency 'aws-sdk', ['~> 2']
+  s.add_runtime_dependency 'activesupport'
 end

@@ -1,5 +1,7 @@
 require 'aws-sdk'
 require 'timeout'
+require 'active_support/all'
+
 class OpsworksInteractor
   begin
     require 'redis-semaphore'
@@ -11,20 +13,18 @@ class OpsworksInteractor
 
   # All opsworks endpoints are in the us-east-1 region, see:
   # http://docs.aws.amazon.com/opsworks/latest/userguide/cli-examples.html
-  OPSWORKS_REGION = 'us-east-1'
 
-  def initialize(access_key_id, secret_access_key, redis: nil)
-    # All opsworks endpoints are always in the OPSWORKS_REGION
+  def initialize(access_key_id, secret_access_key, region, redis: nil)
     @opsworks_client = Aws::OpsWorks::Client.new(
       access_key_id:     access_key_id,
       secret_access_key: secret_access_key,
-      region: OPSWORKS_REGION
+      region: region
     )
 
     @elb_client = Aws::ElasticLoadBalancing::Client.new(
       access_key_id:     access_key_id,
       secret_access_key: secret_access_key,
-      region: ENV['AWS_REGION'] || OPSWORKS_REGION
+      region: region
     )
 
     # Redis host and port may be supplied if you want to run your deploys with
